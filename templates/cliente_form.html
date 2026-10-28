@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Editar cliente' if id else 'Novo cliente' }}{% endblock %}
+{% block corpo %}
+<h1>{{ 'Editar cliente' if id else 'Novo cliente' }}</h1>
+<div class="card"><form class="f" method="post">{{ csrf_field() }}
+<label class="full">Nome completo *<input name="full_name" value="{{ f.full_name or '' }}" required></label>
+<label>E-mail<input name="email" type="email" value="{{ f.email or '' }}"></label>
+<label>Telefone<input name="phone" value="{{ f.phone or '' }}"></label>
+<label>Documento<input name="document_id" value="{{ f.document_id or '' }}"></label>
+<label>Estado<select name="status"><option value="Active" {{ 'selected' if f.status=='Active' }}>Ativo</option><option value="Inactive" {{ 'selected' if f.status=='Inactive' }}>Inativo</option></select></label>
+<label class="full">Notas<textarea name="notes" rows="3">{{ f.notes or '' }}</textarea></label>
+<div class="full"><button class="btn">Guardar</button> <a class="btn sec" href="{{ url_for('clientes') }}">Cancelar</a></div>
+</form></div>
+{% endblock %}

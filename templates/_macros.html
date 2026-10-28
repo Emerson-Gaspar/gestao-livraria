@@ -1,0 +1,3 @@
+{% macro badge(v) %}<span class="badge b-{{ (v or '')|lower|replace('-','') }}">{{ v|pt }}</span>{% endmacro %}
+{% macro apagar(url, msg, pequeno=false) %}<form method="post" action="{{ url }}" class="inline" onsubmit='return confirm({{ msg|tojson }})'>{{ csrf_field() }}<button class="btn danger{{ ' sm' if pequeno }}">Apagar</button></form>{% endmacro %}
+{% macro mudar_estado(url, estados, atual) %}<form method="post" action="{{ url }}" class="inline">{{ csrf_field() }}<select name="status">{% for e in estados %}<option value="{{ e }}" {{ 'selected' if e==atual }}>{{ e|pt }}</option>{% endfor %}</select><button class="btn sec sm">Alterar estado</button></form>{% endmacro %}

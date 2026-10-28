@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Editar utilizador' if id else 'Novo utilizador' }}{% endblock %}
+{% block corpo %}
+<h1>{{ 'Editar utilizador' if id else 'Novo utilizador' }}</h1>
+<div class="card"><form class="f" method="post" autocomplete="off">{{ csrf_field() }}
+<label>Nome *<input name="name" value="{{ f.name or '' }}" required></label>
+<label>E-mail *<input name="email" type="email" value="{{ f.email or '' }}" required></label>
+<label>Perfil<select name="role">{% for p in perfis %}<option value="{{ p }}" {{ 'selected' if f.role==p }}>{{ p|pt }}</option>{% endfor %}</select></label>
+<label>{{ 'Nova palavra-passe temporária (deixe vazio para não alterar)' if id else 'Palavra-passe temporária *' }}<input name="password" type="text" minlength="6" {{ '' if id else 'required' }} autocomplete="off"></label>
+<div class="full mut">O utilizador terá de escolher uma palavra-passe própria no primeiro acesso.</div>
+<div class="full"><button class="btn">Guardar</button> <a class="btn sec" href="{{ url_for('utilizadores') }}">Cancelar</a></div>
+</form></div>
+{% endblock %}

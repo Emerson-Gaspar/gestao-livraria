@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% from "_macros.html" import badge, apagar, mudar_estado %}
+{% block titulo %}{{ s.display_name }}{% endblock %}
+{% block corpo %}
+<div class="top"><h1>Venda {{ s.display_name }}</h1>
+<div class="acoes"><a class="btn sec" href="{{ url_for('vendas') }}">← Vendas</a>
+<a class="btn sec" href="{{ url_for('venda_recibo', n=s.sale_number) }}" target="_blank">Recibo / Imprimir</a>
+{% if pode('apagar') %}{{ apagar(url_for('venda_apagar', n=s.sale_number), 'Apagar esta venda e todas as suas linhas? Esta ação não pode ser desfeita.') }}{% endif %}</div></div>
+<div class="card"><dl>
+<dt>Data</dt><dd>{{ s.sale_date|data }}</dd>
+<dt>Cliente</dt><dd>{% if s.customer_id %}<a href="{{ url_for('cliente', id=s.customer_id) }}">{{ s.full_name }}</a>{% else %}Venda ao balcão{% endif %}</dd>
+<dt>Canal</dt><dd>{{ s.channel|pt }}</dd>
+<dt>Estado</dt><dd>{% if pode('estado') %}{{ mudar_estado(url_for('venda_estado', n=s.sale_number), estados, s.status) }}{% else %}{{ badge(s.status) }}{% endif %}</dd>
+<dt>Notas</dt><dd>{{ s.notes or '—' }}</dd><dt>Total</dt><dd><b>{{ s.sale_total|money }}</b></dd>
+</dl></div>
+<h2>Linhas</h2>
+<div class="wrap"><table><tr><th>Livro</th><th class="r">Qtd</th><th class="r">Preço unit.</th><th class="r">Desconto</th><th class="r">Total</th></tr>
+{% for i in itens %}<tr><td>{% if i.book_id %}<a href="{{ url_for('livro', id=i.book_id) }}">{{ i.book_title }}</a>{% else %}{{ i.line_name|replace(' - Sale Item','') }}{% endif %}</td>
+<td class="r">{{ i.quantity }}</td><td class="r">{{ i.unit_price|money }}</td><td class="r">{{ i.discount|money }}</td><td class="r">{{ i.line_total|money }}</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

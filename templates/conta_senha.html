@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block titulo %}Alterar palavra-passe{% endblock %}
+{% block corpo %}
+<h1>Alterar palavra-passe</h1>
+{% if user['must_change'] %}<div class="flash">Por segurança, tem de definir uma nova palavra-passe antes de continuar.</div>{% endif %}
+<div class="card" style="max-width:420px"><form class="f" method="post" style="grid-template-columns:1fr">{{ csrf_field() }}
+<label>Palavra-passe atual<input name="atual" type="password" required></label>
+<label>Nova palavra-passe (mín. 6 caracteres)<input name="nova" type="password" required minlength="6"></label>
+<label>Confirmar nova palavra-passe<input name="conf" type="password" required></label>
+<div><button class="btn">Guardar</button></div></form></div>
+{% endblock %}

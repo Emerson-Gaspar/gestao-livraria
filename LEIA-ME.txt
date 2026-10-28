@@ -1,0 +1,34 @@
+Gestão de Livraria (local) — Flask + SQLite — moeda: Kwanza (Kz)
+
+1. Instalar:   pip install -r requirements.txt
+2. Executar:   python app.py
+3. Abrir:      http://127.0.0.1:5000
+
+PRIMEIRO ACESSO
+Todos os utilizadores começam com a palavra-passe temporária  livraria123
+e são obrigados a trocá-la no primeiro login.
+
+  Administrador  emersoncristo06@gmail.com
+  Gestor         william.lee@example.com
+  Atendente      asher.moore@example.com
+  Atendente      amelia.smith@example.com
+
+PERFIS
+  Administrador  tudo, incluindo gerir utilizadores
+  Gestor         livros, clientes, vendas e compras (criar, editar, apagar); vê custos
+  Atendente      consultar livros/clientes/vendas, registar vendas, criar/editar clientes
+
+STOCK
+Stock = compras em estado «Recebida» − vendas em estado «Concluída».
+Rascunhos, cancelamentos e reembolsos não contam. Não se conclui uma venda sem stock
+suficiente, nem se retira uma compra de «Recebida» se esse stock já foi vendido.
+
+OUTRAS FUNÇÕES
+Recibo imprimível por venda · Exportar CSV (livros, clientes, vendas, compras) ·
+Painel com valor do stock e livros mais vendidos · Histórico de atividade e backup da
+base de dados (administradores) · Bloqueio de 5 min após 5 logins falhados · Sessão expira em 8 h.
+
+DADOS
+Tudo fica em bookstore.db. Faça uma cópia antes de experimentar.
+Os preços foram convertidos de dólares para kwanzas a 1 US$ = 920 Kz (arredondado ao kwanza).
+Se um utilizador esquecer a palavra-passe, um administrador redefine-a em Utilizadores > Editar.

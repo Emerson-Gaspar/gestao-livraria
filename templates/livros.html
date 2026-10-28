@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% from "_macros.html" import badge %}
+{% block titulo %}Livros{% endblock %}
+{% block corpo %}
+<div class="top"><h1>Livros</h1>
+<div class="acoes"><form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Pesquisar título, autor ou ISBN"><button class="btn sec">Pesquisar</button></form>
+<a class="btn sec" href="{{ url_for('exportar', tabela='livros') }}">Exportar CSV</a>
+{% if pode('editar_livros') %}<a class="btn" href="{{ url_for('livro_form') }}">+ Novo livro</a>{% endif %}</div></div>
+<div class="wrap"><table>
+<tr><th>Título</th><th>Autor</th><th>Categoria</th><th class="r">Preço</th><th class="r">Stock</th><th>Estado</th></tr>
+{% for b in lista %}<tr><td><a href="{{ url_for('livro', id=b.id) }}">{{ b.title }}</a></td><td>{{ b.author }}</td><td>{{ b.category|pt }}</td><td class="r">{{ b.unit_price|money }}</td>
+<td class="r {{ 'low' if b.stock_on_hand <= b.reorder_level }}">{{ b.stock_on_hand }}</td><td>{{ badge(b.status) }}</td></tr>
+{% else %}<tr><td colspan="6" class="mut">Nenhum livro encontrado.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

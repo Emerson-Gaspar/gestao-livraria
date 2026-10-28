@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% from "_macros.html" import badge, apagar, mudar_estado %}
+{% block titulo %}{{ p.display_name }}{% endblock %}
+{% block corpo %}
+<div class="top"><h1>Compra {{ p.display_name }}</h1>
+<div class="acoes"><a class="btn sec" href="{{ url_for('compras') }}">← Compras</a>
+{% if pode('apagar') %}{{ apagar(url_for('compra_apagar', n=p.purchase_number), 'Apagar esta compra e todas as suas linhas? Esta ação não pode ser desfeita.') }}{% endif %}</div></div>
+<div class="card"><dl>
+<dt>Fornecedor</dt><dd>{{ p.supplier_name }}</dd><dt>Data</dt><dd>{{ p.purchase_date|data }}</dd>
+<dt>Estado</dt><dd>{{ mudar_estado(url_for('compra_estado', n=p.purchase_number), estados, p.status) }}</dd>
+<dt>Notas</dt><dd>{{ p.notes or '—' }}</dd><dt>Custo total</dt><dd><b>{{ p.total_cost|money }}</b></dd>
+</dl></div>
+<h2>Linhas</h2>
+<div class="wrap"><table><tr><th>Descrição</th><th class="r">Qtd</th><th class="r">Custo unit.</th><th class="r">Total</th></tr>
+{% for i in itens %}<tr><td>{% if i.book_id %}<a href="{{ url_for('livro', id=i.book_id) }}">{{ i.line_name }}</a>{% else %}{{ i.line_name }}{% endif %}</td>
+<td class="r">{{ i.quantity }}</td><td class="r">{{ i.unit_cost|money }}</td><td class="r">{{ i.line_total|money }}</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

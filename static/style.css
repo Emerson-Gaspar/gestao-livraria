@@ -1,0 +1,46 @@
+:root{--bg:#f2f7fe;--card:#fff;--tx:#16305a;--mut:#5f7599;--bd:#d5e3f6;--pri:#1d6fe0;--pri2:#0f52b8;--soft:#e8f1fd;--ok:#127a57;--er:#c23b4a;--wa:#a8700f}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+a{color:var(--pri);text-decoration:none}a:hover{text-decoration:underline}
+nav{background:linear-gradient(90deg,#1d6fe0,#3b8cf0);padding:0 16px;display:flex;gap:2px;flex-wrap:wrap;align-items:center;box-shadow:0 2px 8px rgba(29,111,224,.25)}
+nav .logo{font-weight:700;color:#fff;margin-right:14px;padding:12px 0}
+nav a{padding:12px 11px;color:#dcebff;border-bottom:3px solid transparent}
+nav a:hover{color:#fff;text-decoration:none}nav a.on{color:#fff;border-color:#fff}
+nav .sp{flex:1}nav .quem{color:#dcebff;font-size:13px;padding:0 8px}
+nav form{margin:0}nav button{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:7px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+nav button:hover{background:rgba(255,255,255,.3)}
+main{max-width:1050px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:22px;margin:0 0 16px;color:var(--pri2)}h2{font-size:16px;margin:24px 0 8px;color:var(--pri2)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.top h1{margin:0}.acoes{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(29,111,224,.06)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:8px}
+.stat{border-top:4px solid var(--pri)}.stat .n{font-size:22px;font-weight:700;color:var(--pri2)}.stat .l{color:var(--mut);font-size:13px}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:12px}
+table{width:100%;border-collapse:collapse}th,td{padding:9px 12px;text-align:left;border-bottom:1px solid #e6eefa;white-space:nowrap}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--pri2);background:var(--soft)}
+tr:last-child td{border-bottom:0}tbody tr:hover td,table tr:hover td{background:#f7faff}
+td.r,th.r{text-align:right}.mut{color:var(--mut)}.low{color:var(--er);font-weight:600}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;border:1px solid currentColor;background:#fff}
+.b-active,.b-completed,.b-received,.b-admin{color:var(--ok)}.b-draft,.b-manager{color:var(--wa)}
+.b-cancelled,.b-refunded,.b-inactive,.b-discontinued{color:var(--er)}.b-attendant{color:var(--pri)}
+.btn{display:inline-block;background:var(--pri);color:#fff;border:1px solid var(--pri);border-radius:8px;padding:8px 14px;font:inherit;cursor:pointer}
+.btn:hover{background:var(--pri2);text-decoration:none}
+.btn.sec{background:#fff;color:var(--pri);border-color:var(--bd)}.btn.sec:hover{background:var(--soft)}
+.btn.danger{background:#fff;color:var(--er);border-color:#efc3c8}.btn.danger:hover{background:#fdecee}
+.btn.sm{padding:4px 10px;font-size:13px}
+form.f{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label{display:block;font-size:13px;color:var(--mut)}label.full{grid-column:1/-1}
+input,select,textarea{width:100%;padding:8px 10px;margin-top:3px;border:1px solid var(--bd);border-radius:8px;background:#fbfdff;color:var(--tx);font:inherit}
+input:focus,select:focus,textarea:focus{outline:2px solid #b9d5fb;border-color:var(--pri)}
+.flash{padding:10px 14px;border-radius:8px;margin-bottom:12px;border:1px solid var(--bd);background:#fff}
+.flash.ok{border-color:#9ad8bf;background:#effaf5}.flash.erro{border-color:#efb3ba;background:#fdf1f2}
+.search{display:flex;gap:8px;flex-wrap:wrap}.search input{margin:0;min-width:220px}.search select{margin:0}
+dl{display:grid;grid-template-columns:160px 1fr;gap:6px 12px;margin:0}dt{color:var(--mut)}dd{margin:0}
+.bar{height:8px;background:linear-gradient(90deg,#1d6fe0,#6aaaf7);border-radius:4px}
+.lines td{padding:6px}.lines input,.lines select{margin:0}
+.login{max-width:380px;margin:9vh auto 0}.login h1{text-align:center}.login .logo{font-size:44px;text-align:center}
+.login .f{grid-template-columns:1fr}.login .btn{width:100%}
+.inline{display:inline-flex;gap:6px;align-items:center}.inline select{margin:0;width:auto}
+
+@media print{nav,.noprint,.flash{display:none!important}body{background:#fff}main{padding:0;max-width:none}.card{border:0;box-shadow:none}}

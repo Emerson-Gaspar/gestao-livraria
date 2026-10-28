@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% from "_macros.html" import badge, apagar %}
+{% block titulo %}{{ l.title }}{% endblock %}
+{% block corpo %}
+<div class="top"><h1>{{ l.title }}</h1>
+<div class="acoes">{% if pode('editar_livros') %}<a class="btn" href="{{ url_for('livro_form', id=l.id) }}">Editar</a>{% endif %}
+{% if pode('apagar') %}{{ apagar(url_for('livro_apagar', id=l.id), 'Apagar este livro? Esta ação não pode ser desfeita.') }}{% endif %}</div></div>
+<div class="card"><dl>
+<dt>Autor</dt><dd>{{ l.author or '—' }}</dd><dt>Editora</dt><dd>{{ l.publisher or '—' }}</dd><dt>ISBN</dt><dd>{{ l.isbn or '—' }}</dd>
+<dt>Categoria</dt><dd>{{ l.category|pt }}</dd><dt>Estado</dt><dd>{{ badge(l.status) }}</dd>
+<dt>Preço de venda</dt><dd>{{ l.unit_price|money }}</dd>
+{% if pode('ver_custos') %}<dt>Preço de custo</dt><dd>{{ l.cost_price|money }}</dd>{% endif %}
+<dt>Recebidos / Vendidos</dt><dd>{{ l.total_purchased }} / {{ l.total_sold }}</dd>
+<dt>Em stock</dt><dd class="{{ 'low' if l.stock_on_hand <= l.reorder_level }}"><b>{{ l.stock_on_hand }}</b> (reposição em {{ l.reorder_level }})</dd>
+</dl></div>
+{% if pode('ver_custos') %}
+<h2>Linhas de compra</h2>
+<div class="wrap"><table><tr><th>Compra</th><th>Fornecedor</th><th>Data</th><th>Estado</th><th class="r">Qtd</th><th class="r">Total</th></tr>
+{% for i in compras %}<tr><td><a href="{{ url_for('compra', n=i.purchase_number) }}">PO-{{ i.purchase_number }}</a></td><td>{{ i.supplier_name }}</td><td>{{ i.purchase_date|data }}</td><td>{{ badge(i.status) }}</td><td class="r">{{ i.quantity }}</td><td class="r">{{ i.line_total|money }}</td></tr>
+{% else %}<tr><td colspan="6" class="mut">Sem compras associadas.</td></tr>{% endfor %}</table></div>
+{% endif %}
+<h2>Linhas de venda</h2>
+<div class="wrap"><table><tr><th>Venda</th><th>Data</th><th>Estado</th><th class="r">Qtd</th><th class="r">Desconto</th><th class="r">Total</th></tr>
+{% for i in vendas %}<tr><td><a href="{{ url_for('venda', n=i.sale_number) }}">SO-{{ i.sale_number }}</a></td><td>{{ i.sale_date|data }}</td><td>{{ badge(i.status) }}</td><td class="r">{{ i.quantity }}</td><td class="r">{{ i.discount|money }}</td><td class="r">{{ i.line_total|money }}</td></tr>
+{% else %}<tr><td colspan="6" class="mut">Sem vendas associadas.</td></tr>{% endfor %}</table></div>
+{% endblock %}

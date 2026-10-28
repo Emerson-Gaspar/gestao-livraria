@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% from "_macros.html" import badge, apagar %}
+{% block titulo %}{{ c.full_name }}{% endblock %}
+{% block corpo %}
+<div class="top"><h1>{{ c.full_name }}</h1>
+<div class="acoes"><a class="btn" href="{{ url_for('cliente_form', id=c.id) }}">Editar</a>
+{% if pode('apagar') %}{{ apagar(url_for('cliente_apagar', id=c.id), 'Apagar este cliente? Esta ação não pode ser desfeita.') }}{% endif %}</div></div>
+<div class="card"><dl>
+<dt>E-mail</dt><dd>{{ c.email or '—' }}</dd><dt>Telefone</dt><dd>{{ c.phone or '—' }}</dd><dt>Documento</dt><dd>{{ c.document_id or '—' }}</dd>
+<dt>Estado</dt><dd>{{ badge(c.status) }}</dd><dt>Notas</dt><dd>{{ c.notes or '—' }}</dd>
+<dt>Vendas concluídas</dt><dd>{{ c.total_orders }}</dd><dt>Valor total</dt><dd>{{ c.lifetime_value|money }}</dd>
+</dl></div>
+<h2>Vendas</h2>
+<div class="wrap"><table><tr><th>Venda</th><th>Data</th><th>Canal</th><th>Estado</th><th class="r">Total</th></tr>
+{% for s in vendas %}<tr><td><a href="{{ url_for('venda', n=s.sale_number) }}">{{ s.display_name }}</a></td><td>{{ s.sale_date|data }}</td><td>{{ s.channel|pt }}</td><td>{{ badge(s.status) }}</td><td class="r">{{ s.sale_total|money }}</td></tr>
+{% else %}<tr><td colspan="5" class="mut">Sem vendas.</td></tr>{% endfor %}</table></div>
+{% endblock %}

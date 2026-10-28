@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% from "_macros.html" import badge %}
+{% block titulo %}Recibo {{ s.display_name }}{% endblock %}
+{% block corpo %}
+<div class="noprint top"><h1>Recibo {{ s.display_name }}</h1>
+<div class="acoes"><a class="btn sec" href="{{ url_for('venda', n=s.sale_number) }}">← Voltar</a><button class="btn" onclick="window.print()">Imprimir</button></div></div>
+<div class="card recibo">
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+<div><b style="font-size:20px">📚 Livraria</b><div class="mut">Recibo de venda</div></div>
+<div style="text-align:right"><b>{{ s.display_name }}</b><div class="mut">{{ s.sale_date|data }}</div>{{ badge(s.status) }}</div></div>
+<hr style="border:0;border-top:1px solid var(--bd);margin:14px 0">
+<p><b>Cliente:</b> {{ s.full_name or 'Venda ao balcão' }}{% if s.document_id %} <span class="mut">· {{ s.document_id }}</span>{% endif %}<br>
+<b>Canal:</b> {{ s.channel|pt }}</p>
+<div class="wrap" style="border:0"><table>
+<tr><th>Descrição</th><th class="r">Qtd</th><th class="r">Preço unit.</th><th class="r">Desconto</th><th class="r">Total</th></tr>
+{% for i in itens %}<tr><td>{{ i.book_title or i.line_name|replace(' - Sale Item','') }}</td><td class="r">{{ i.quantity }}</td><td class="r">{{ i.unit_price|money }}</td><td class="r">{{ i.discount|money }}</td><td class="r">{{ i.line_total|money }}</td></tr>{% endfor %}
+</table></div>
+<div style="text-align:right;margin-top:12px">
+<div class="mut">Subtotal: {{ subtotal|money }}</div><div class="mut">Descontos: − {{ desconto|money }}</div>
+<div style="font-size:20px"><b>Total: {{ s.sale_total|money }}</b></div></div>
+{% if s.status != 'Completed' %}<p class="low" style="margin-top:12px">Atenção: esta venda está em estado «{{ s.status|pt }}» — documento sem valor de recibo.</p>{% endif %}
+<p class="mut" style="margin-top:16px;font-size:12px">Emitido em {{ agora }} por {{ user['name'] }}.</p>
+</div>
+{% endblock %}

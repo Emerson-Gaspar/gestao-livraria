@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block titulo %}Atividade{% endblock %}
+{% block corpo %}
+<div class="top"><h1>Atividade e backup</h1>
+<form method="post" action="{{ url_for('backup') }}" class="inline">{{ csrf_field() }}<button class="btn">Descarregar backup da base de dados</button></form></div>
+<p class="mut">Últimas 200 ações. O backup é uma cópia completa do ficheiro bookstore.db (inclui palavras-passe cifradas: guarde-o em local seguro).</p>
+<div class="wrap"><table><tr><th>Quando</th><th>Utilizador</th><th>Ação</th><th>Detalhe</th></tr>
+{% for a in lista %}<tr><td>{{ a.quando|data }}</td><td>{{ a.user_name }}</td><td>{{ a.acao }}</td><td style="white-space:normal">{{ a.detalhe or '' }}</td></tr>
+{% else %}<tr><td colspan="4" class="mut">Sem atividade registada.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

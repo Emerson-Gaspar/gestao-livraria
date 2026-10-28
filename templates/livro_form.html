@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Editar livro' if id else 'Novo livro' }}{% endblock %}
+{% block corpo %}
+<h1>{{ 'Editar livro' if id else 'Novo livro' }}</h1>
+<div class="card"><form class="f" method="post">{{ csrf_field() }}
+<label class="full">Título *<input name="title" value="{{ f.title or '' }}" required></label>
+<label>Autor<input name="author" value="{{ f.author or '' }}"></label>
+<label>Editora<input name="publisher" value="{{ f.publisher or '' }}"></label>
+<label>ISBN<input name="isbn" value="{{ f.isbn or '' }}"></label>
+<label>Categoria<select name="category">{% for c in categorias %}<option value="{{ c }}" {{ 'selected' if f.category==c }}>{{ c|pt }}</option>{% endfor %}</select></label>
+<label>Preço de venda ({{ MOEDA }})<input name="unit_price" type="number" step="1" min="0" value="{{ (f.unit_price|int) if f.unit_price else '' }}"></label>
+<label>Preço de custo ({{ MOEDA }})<input name="cost_price" type="number" step="1" min="0" value="{{ (f.cost_price|int) if f.cost_price else '' }}"></label>
+<label>Nível de reposição<input name="reorder_level" type="number" min="0" value="{{ f.reorder_level if f.reorder_level is not none else '' }}"></label>
+<label>Estado<select name="status"><option value="Active" {{ 'selected' if f.status=='Active' }}>Ativo</option><option value="Discontinued" {{ 'selected' if f.status=='Discontinued' }}>Descontinuado</option></select></label>
+<div class="full"><button class="btn">Guardar</button> <a class="btn sec" href="{{ url_for('livros') }}">Cancelar</a></div>
+</form></div>
+{% endblock %}

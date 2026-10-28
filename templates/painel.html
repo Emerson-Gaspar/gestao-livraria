@@ -1,0 +1,36 @@
+{% extends "base.html" %}{% from "_macros.html" import badge %}
+{% block titulo %}Painel{% endblock %}
+{% block corpo %}
+<h1>Painel</h1>
+<div class="grid">
+  <div class="card stat"><div class="n">{{ stats.livros }}</div><div class="l">Livros ativos</div></div>
+  <div class="card stat"><div class="n">{{ stats.clientes }}</div><div class="l">Clientes ativos</div></div>
+  <div class="card stat"><div class="n">{{ stats.receita|money }}</div><div class="l">Receita (vendas concluídas)</div></div>
+  {% if pode('ver_custos') %}<div class="card stat"><div class="n">{{ stats.custo|money }}</div><div class="l">Custo (compras recebidas)</div></div>
+  <div class="card stat"><div class="n">{{ stats.valor_stock|money }}</div><div class="l">Valor do stock (a preço de custo)</div></div>{% endif %}
+</div>
+<h2>Stock baixo ou esgotado</h2>
+<div class="wrap"><table>
+<tr><th>Livro</th><th class="r">Em stock</th><th class="r">Nível de reposição</th></tr>
+{% for b in baixo %}<tr><td><a href="{{ url_for('livro', id=b.id) }}">{{ b.title }}</a></td><td class="r low">{{ b.stock_on_hand }}</td><td class="r">{{ b.reorder_level }}</td></tr>
+{% else %}<tr><td colspan="3" class="mut">Sem alertas de stock.</td></tr>{% endfor %}
+</table></div>
+<h2>Vendas recentes</h2>
+<div class="wrap"><table>
+<tr><th>Venda</th><th>Data</th><th>Cliente</th><th>Estado</th><th class="r">Total</th></tr>
+{% for s in recentes %}<tr><td><a href="{{ url_for('venda', n=s.sale_number) }}">{{ s.display_name }}</a></td><td>{{ s.sale_date|data }}</td><td>{{ s.full_name or '—' }}</td><td>{{ badge(s.status) }}</td><td class="r">{{ s.sale_total|money }}</td></tr>
+{% else %}<tr><td colspan="5" class="mut">Ainda sem vendas.</td></tr>{% endfor %}
+</table></div>
+<h2>Livros mais vendidos (vendas concluídas)</h2>
+<div class="wrap"><table>
+<tr><th>Livro</th><th class="r">Unidades vendidas</th></tr>
+{% for t in top %}<tr><td><a href="{{ url_for('livro', id=t.id) }}">{{ t.title }}</a></td><td class="r">{{ t.q }}</td></tr>
+{% else %}<tr><td colspan="2" class="mut">Ainda sem vendas concluídas.</td></tr>{% endfor %}
+</table></div>
+<h2>Receita por canal (concluídas)</h2>
+<div class="card">
+{% set mx = (canais|map(attribute='total')|max) if canais else 1 %}
+{% for c in canais %}<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between"><span>{{ c.channel|pt }} · {{ c.n }} venda(s)</span><b>{{ c.total|money }}</b></div><div class="bar" style="width:{{ (c.total / mx * 100)|round|int }}%"></div></div>
+{% else %}<span class="mut">Ainda sem vendas concluídas.</span>{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block titulo %}Entrar{% endblock %}
+{% block corpo %}
+<div class="login"><div class="logo">📚</div><h1>Gestão de Livraria</h1>
+<div class="card"><form class="f" method="post">{{ csrf_field() }}
+<label>E-mail<input name="email" type="email" required autofocus></label>
+<label>Palavra-passe<input name="password" type="password" required></label>
+<button class="btn">Entrar</button></form></div></div>
+{% endblock %}

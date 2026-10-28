@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block titulo %}Nova compra{% endblock %}
+{% block corpo %}
+<h1>Nova compra</h1>
+<form method="post">{{ csrf_field() }}
+<div class="card"><div class="f">
+<label>Fornecedor *<input name="supplier_name" required></label>
+<label>Data<input type="date" name="purchase_date" value="{{ hoje }}"></label>
+<label>Estado (só «Recebida» entra no stock)<select name="status">{% for e in estados %}<option value="{{ e }}">{{ e|pt }}</option>{% endfor %}</select></label>
+<label class="full">Notas<input name="notes"></label>
+</div></div>
+<h2>Linhas (até 5)</h2>
+<div class="wrap"><table class="lines">
+<tr><th>Livro do catálogo</th><th>ou descrição livre</th><th>Qtd</th><th>Custo unit. ({{ MOEDA }}) — vazio = custo do livro</th></tr>
+{% for i in range(1,6) %}<tr>
+<td><select name="book_{{ i }}"><option value="">—</option>{% for b in livros %}<option value="{{ b.id }}">{{ b.title }}</option>{% endfor %}</select></td>
+<td><input name="nome_{{ i }}"></td><td><input name="qtd_{{ i }}" type="number" min="1" style="width:70px"></td>
+<td><input name="custo_{{ i }}" type="number" step="1" min="0" style="width:150px"></td></tr>{% endfor %}
+</table></div>
+<p><button class="btn">Registar compra</button> <a class="btn sec" href="{{ url_for('compras') }}">Cancelar</a></p>
+</form>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block titulo %}Nova venda{% endblock %}
+{% block corpo %}
+<h1>Nova venda</h1>
+<form method="post">{{ csrf_field() }}
+<div class="card"><div class="f">
+<label>Data e hora<input type="datetime-local" name="sale_date" value="{{ agora }}"></label>
+<label>Cliente<select name="customer_id"><option value="">Venda ao balcão</option>{% for c in clientes %}<option value="{{ c.id }}">{{ c.full_name }}</option>{% endfor %}</select></label>
+<label>Canal<select name="channel"><option value="In-store">Na loja</option><option value="Online">Online</option><option value="Phone">Telefone</option></select></label>
+<label>Estado<select name="status"><option value="Draft">Rascunho (não baixa stock)</option><option value="Completed">Concluída (baixa stock)</option></select></label>
+<label class="full">Notas<input name="notes"></label>
+</div></div>
+<h2>Linhas (até 5)</h2>
+<div class="wrap"><table class="lines">
+<tr><th>Livro do catálogo</th><th>ou descrição livre</th><th>Qtd</th><th>Preço ({{ MOEDA }}) — vazio = preço do livro</th><th>Desconto ({{ MOEDA }})</th></tr>
+{% for i in range(1,6) %}<tr>
+<td><select name="book_{{ i }}"><option value="">—</option>{% for b in livros %}<option value="{{ b.id }}">{{ b.title }} — stock {{ b.stock_on_hand }}</option>{% endfor %}</select></td>
+<td><input name="nome_{{ i }}"></td><td><input name="qtd_{{ i }}" type="number" min="1" style="width:70px"></td>
+<td><input name="preco_{{ i }}" type="number" step="1" min="0" style="width:130px"></td><td><input name="desc_{{ i }}" type="number" step="1" min="0" style="width:110px"></td></tr>{% endfor %}
+</table></div>
+<p><button class="btn">Registar venda</button> <a class="btn sec" href="{{ url_for('vendas') }}">Cancelar</a></p>
+</form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% from "_macros.html" import badge %}
+{% block titulo %}Clientes{% endblock %}
+{% block corpo %}
+<div class="top"><h1>Clientes</h1>
+<div class="acoes"><form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Pesquisar nome, e-mail ou documento"><button class="btn sec">Pesquisar</button></form>
+<a class="btn sec" href="{{ url_for('exportar', tabela='clientes') }}">Exportar CSV</a>
+<a class="btn" href="{{ url_for('cliente_form') }}">+ Novo cliente</a></div></div>
+<div class="wrap"><table>
+<tr><th>Nome</th><th>E-mail</th><th>Telefone</th><th class="r">Vendas concluídas</th><th class="r">Valor total</th><th>Estado</th></tr>
+{% for c in lista %}<tr><td><a href="{{ url_for('cliente', id=c.id) }}">{{ c.full_name }}</a></td><td>{{ c.email }}</td><td>{{ c.phone }}</td><td class="r">{{ c.total_orders }}</td><td class="r">{{ c.lifetime_value|money }}</td><td>{{ badge(c.status) }}</td></tr>
+{% else %}<tr><td colspan="6" class="mut">Nenhum cliente encontrado.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

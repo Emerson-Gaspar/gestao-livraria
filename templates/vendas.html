@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% from "_macros.html" import badge %}
+{% block titulo %}Vendas{% endblock %}
+{% block corpo %}
+<div class="top"><h1>Vendas</h1>
+<div class="acoes"><form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Pesquisar nº, cliente ou nota"><select name="estado" onchange="this.form.submit()">
+<option value="">Todos os estados</option>{% for e in estados %}<option value="{{ e }}" {{ 'selected' if e==estado }}>{{ e|pt }}</option>{% endfor %}</select><button class="btn sec">Pesquisar</button></form>
+<a class="btn sec" href="{{ url_for('exportar', tabela='vendas') }}">Exportar CSV</a>
+<a class="btn" href="{{ url_for('venda_form') }}">+ Nova venda</a></div></div>
+<div class="wrap"><table>
+<tr><th>Venda</th><th>Data</th><th>Cliente</th><th>Canal</th><th>Estado</th><th class="r">Total</th></tr>
+{% for s in lista %}<tr><td><a href="{{ url_for('venda', n=s.sale_number) }}">{{ s.display_name }}</a></td><td>{{ s.sale_date|data }}</td><td>{{ s.full_name or '—' }}</td><td>{{ s.channel|pt }}</td><td>{{ badge(s.status) }}</td><td class="r">{{ s.sale_total|money }}</td></tr>
+{% else %}<tr><td colspan="6" class="mut">Sem vendas.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

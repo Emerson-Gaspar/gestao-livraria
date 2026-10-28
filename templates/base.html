@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block titulo %}Livraria{% endblock %} · Gestão de Livraria</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+{% set ep = request.endpoint or '' %}
+{% if user %}
+<nav>
+  <span class="logo">📚 Livraria</span>
+  <a href="{{ url_for('painel') }}" class="{{ 'on' if ep=='painel' }}">Painel</a>
+  <a href="{{ url_for('livros') }}" class="{{ 'on' if ep.startswith('livro') }}">Livros</a>
+  <a href="{{ url_for('clientes') }}" class="{{ 'on' if ep.startswith('cliente') }}">Clientes</a>
+  <a href="{{ url_for('vendas') }}" class="{{ 'on' if ep.startswith('venda') }}">Vendas</a>
+  {% if pode('compras') %}<a href="{{ url_for('compras') }}" class="{{ 'on' if ep.startswith('compra') }}">Compras</a>{% endif %}
+  {% if pode('utilizadores') %}<a href="{{ url_for('utilizadores') }}" class="{{ 'on' if ep.startswith('utilizador') }}">Utilizadores</a>
+  <a href="{{ url_for('atividade') }}" class="{{ 'on' if ep=='atividade' }}">Atividade</a>{% endif %}
+  <span class="sp"></span>
+  <a href="{{ url_for('conta_senha') }}" class="quem" title="Alterar palavra-passe">{{ user['name'] }} · {{ user['role']|pt }}</a>
+  <form method="post" action="{{ url_for('logout') }}">{{ csrf_field() }}<button>Sair</button></form>
+</nav>
+{% endif %}
+<main>
+{% with msgs = get_flashed_messages(with_categories=true) %}{% for c, m in msgs %}<div class="flash {{ c }}">{{ m }}</div>{% endfor %}{% endwith %}
+{% block corpo %}{% endblock %}
+</main>
+</body></html>
